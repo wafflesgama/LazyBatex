@@ -1,20 +1,22 @@
 bl_info = {
-    "name" : "Batex",
-    "author" : "jayanam",
-    "descrtion" : "Batch export as Fbx",
+    "name" : "Lazy Batex",
+    "description" : "Lazy Batch export as Fbx",
+    "author" : "jayanam & Guilherme Gama",
+    "version" : (0, 0, 2),
     "blender" : (2, 80, 0),
-    "version" : (0, 6, 0, 0),
-    "location" : "Batex panel",
+    "location" : "Lazy Batex Panel",
     "warning" : "",
+    "support" : "COMMUNITY",
+    "doc_url" : "",
     "category" : "Import-Export"
 }
 
 import bpy
 from bpy.props import *
 
-from . bex_panel import *
-from . bex_op import *
-from . bex_folder_op import *
+from .lbex_panel import *
+from .lbex_op import *
+from .lbex_folder_op import *
 
 bpy.types.Scene.export_folder = StringProperty(name="Export folder", 
                subtype="DIR_PATH", 
@@ -47,7 +49,7 @@ bpy.types.Scene.one_material_ID = BoolProperty(name="One material ID",
                 default=True,
                 description="Export just one material per object")
 
-classes = ( BATEX_PT_Panel, BATEX_OT_Operator, BATEX_OT_OpenFolder )
+classes = ( LBATEX_PT_Panel, LBATEX_OT_Operator, LBATEX_OT_OpenFolder)
 
 register, unregister = bpy.utils.register_classes_factory(classes)
     

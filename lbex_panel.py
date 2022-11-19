@@ -1,11 +1,11 @@
 import bpy
 from bpy.types import Panel
 
-class BATEX_PT_Panel(Panel):
+class LBATEX_PT_Panel(Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_label = "Batch Fbx export"
-    bl_category = "Batex"
+    bl_label = "Lazy Batch Fbx export"
+    bl_category = "Lazy Batex"
     
     def draw(self, context):
         
@@ -20,7 +20,7 @@ class BATEX_PT_Panel(Panel):
         col.prop(context.scene, "export_folder", text="")
 
         col = row.column()
-        col.operator('object.bex_ot_openfolder', text='', icon='FILE_TICK')
+        col.operator('object.lbex_ot_openfolder', text='', icon='FILE_TICK')
 
         row = layout.row()
         row.prop(context.scene, "center_transform", text="Center transform")
@@ -43,6 +43,7 @@ class BATEX_PT_Panel(Panel):
         row.prop(context.scene, "export_animations")
 
         row = layout.row()
-        row.operator('object.bex_ot_operator', text='Export')
+        row.operator('object.lbex_ot_operator', text='Lazy Export')
+
 
 
