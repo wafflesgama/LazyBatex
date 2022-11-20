@@ -2,7 +2,7 @@ bl_info = {
     "name" : "Lazy Batex",
     "description" : "Lazy Batch export as Fbx",
     "author" : "jayanam & Guilherme Gama",
-    "version" : (0, 0, 2),
+    "version" : (1, 1, 0),
     "blender" : (2, 80, 0),
     "location" : "Lazy Batex Panel",
     "warning" : "",

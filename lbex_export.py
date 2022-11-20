@@ -86,7 +86,8 @@ class LBatEx_Export:
     bpy.ops.object.mode_set(mode='OBJECT')
 
     collections=[]
-    
+    #print(self.__export_objects)
+    #print("-- objects to export")
     for obj in self.__export_objects:
       bpy.ops.object.select_all(action='DESELECT') 
       obj.select_set(state=True)
@@ -94,7 +95,7 @@ class LBatEx_Export:
       if obj.data == None : 
         continue
        
-     
+      #print("Exporting object -- "+obj.name) 
       # Select children if exist
       for child in get_children(obj):
         child.select_set(state=True)
@@ -129,6 +130,7 @@ class LBatEx_Export:
           
         # Apply the collection pivot axis
         if center != None :
+          #print("Applying the collection pivot axis")
           parentCollection.instance_offset = center.location
           
           for child in parentCollection.all_objects :
@@ -147,7 +149,9 @@ class LBatEx_Export:
         basePath=self.__export_folder + "\\" + names[0] 
         if not os.path.exists(basePath):
           os.mkdir(basePath)
-
+          
+        # Set the parent collection active to be exported
+        bpy.context.view_layer.active_layer_collection = getLayerCollection(parentCollection)
         # Export the selected object as fbx
         bpy.ops.export_scene.fbx(check_existing=False,
         # filepath=self.__export_folder + "/" + obj.name + ".fbx",
@@ -165,7 +169,7 @@ class LBatEx_Export:
         add_leaf_bones=False,
         path_mode='ABSOLUTE')
 
-        print("Exported collection- " + parentCollection.name)
+        #print("Exported collection- " + parentCollection.name)
 
         if materials_removed:
           self.restore_materials(obj)
@@ -173,6 +177,7 @@ class LBatEx_Export:
         collections.append(parentCollection.name)  
         
         if center != None :
+          #print("Restoring to original pos")
           for child in parentCollection.all_objects :
             # Skip Empties
             if child.data == None :
@@ -218,3 +223,17 @@ class LBatEx_Export:
 
         if old_pos is not None:
           set_object_to_loc(obj, old_pos)
+
+def getLayerCollection(collection):
+    layer_collection = bpy.context.view_layer.layer_collection
+    return recurLayerCollection(layer_collection, collection.name)
+  
+# Recursively transverse layer_collection for a particular name
+def recurLayerCollection(layerColl, collName):
+    found = None
+    if (layerColl.name == collName):
+      return layerColl
+    for layer in layerColl.children:
+      found = recurLayerCollection(layer, collName)
+      if found:
+        return found
